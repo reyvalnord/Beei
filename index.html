@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For My Love</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1f2b1d, #2b3b28, #1a2418);
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            font-family: 'Nunito', sans-serif;
+            color: #8b1c1c; 
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 420px;
+            background-color: #fdfaf4;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.6);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .cursive {
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+        }
+
+        /* --- EFEK SELOTIP KERTAS --- */
+        .tape {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 90px;
+            height: 25px;
+            background-color: rgba(230, 222, 204, 0.85);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        /* --- LOGIN & QUIZ SECTION --- */
+        .auth-section {
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: radial-gradient(rgba(139, 28, 28, 0.05) 2px, transparent 2px);
+            background-size: 20px 20px;
+        }
+        
+        .auth-card {
+            background-color: white;
+            border: 3px solid #8b1c1c;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            padding: 40px 25px 35px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 3px 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border: 2px solid #8b1c1c;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            background-color: rgba(253, 250, 244, 0.5);
+            font-family: 'Caveat', cursive;
+            font-size: 1.5em;
+            color: #8b1c1c;
+            outline: none;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .form-input::placeholder {
+            color: #d1b8b8;
+        }
+        .form-input:focus {
+            background-color: #fff;
+            box-shadow: 2px 3px 0px rgba(139,28,28,0.1);
+        }
+        
+        .form-btn {
+            background-color: #8b1c1c;
+            color: #fdfaf4;
+            border: none;
+            padding: 8px 30px;
+            border-radius: 25px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.6em;
+            cursor: pointer;
+            box-shadow: 3px 4px 0px rgba(139,28,28,0.15);
+            transition: all 0.2s;
+            margin-top: 10px;
+            width: 85%;
+        }
+        .form-btn:active { 
+            transform: translate(2px, 2px);
+            box-shadow: 1px 2px 0px rgba(139,28,28,0.15);
+        }
+        
+        .quiz-group {
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .quiz-group label {
+            display: block;
+            font-family: 'Caveat', cursive;
+            font-size: 1.5em;
+            color: #8b1c1c;
+            margin-bottom: 2px;
+        }
+        .error-msg {
+            color: #d9534f;
+            font-size: 0.9em;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: none;
+            background-color: #ffebeb;
+            padding: 8px;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px; 
+            border: 2px solid #d9534f;
+        }
+
+        /* --- ANIMASI SCROLL --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- ORNAMEN --- */
+        .ornament {
+            position: absolute;
+            z-index: 10;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+        .orn-fp { width: 70px; top: 20px; left: -10px; transform: rotate(-15deg); } 
+        .orn-star { width: 55px; top: -15px; left: 15px; transform: rotate(-10deg); } 
+        .orn-stamp { width: 75px; top: -20px; right: -15px; transform: rotate(8deg); } 
+        .orn-seal { width: 75px; bottom: -25px; right: 10px; transform: rotate(5deg); } 
+        .orn-text { width: 120px; top: 15px; right: 20px; transform: rotate(5deg); } 
+        .orn-tulip { width: 110px; bottom: -20px; left: -15px; transform: rotate(-25deg); filter: drop-shadow(0 8px 12px rgba(0,0,0,0.2)); z-index: 20; } 
+
+        /* --- HEADER --- */
+        .header-section {
+            text-align: center;
+            padding: 40px 20px 30px;
+            position: relative;
+        }
+        .header-title {
+            font-size: 2.3em;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(139,28,28,0.1);
+        }
+        
+        .floating-heart {
+            position: absolute;
+            font-size: 1.5em;
+            color: #8b1c1c;
+            font-family: 'Caveat', cursive;
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(-15deg); }
+            50% { transform: translateY(-15px) rotate(-5deg); }
+            100% { transform: translateY(0px) rotate(-15deg); }
+        }
+
+        .main-photo {
+            width: 80%;
+            margin: 25px auto;
+            position: relative;
+            background-color: #8b1c1c;
+            padding: 10px;
+            border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%;
+            box-shadow: 0 8px 20px rgba(139,28,28,0.2);
+            transition: transform 0.3s;
+        }
+        .main-photo:hover { transform: scale(1.02); }
+        .main-photo img {
+            width: 100%;
+            border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+            display: block;
+        }
+        .date-banner {
+            background: linear-gradient(135deg, #2b4f2c, #1f3a20);
+            color: #fdf8f0;
+            font-size: 1.5em;
+            padding: 8px 25px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: -20px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* --- PHOTO GRID --- */
+        .grid-section {
+            text-align: center;
+            padding: 20px;
+        }
+        .section-title {
+            font-size: 2.4em;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: rgba(139,28,28,0.2);
+            border-radius: 2px;
+        }
+        .photo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background-color: #8b1c1c;
+            padding: 8px;
+            margin: 15px auto;
+            border: 2px solid #8b1c1c;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px rgba(0,0,0,0.15);
+        }
+        .photo-grid img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border: 2px solid white;
+            border-radius: 4px;
+        }
+
+        /* --- TIC-TAC-TOE GAME --- */
+        .tictactoe-section {
+            text-align: center;
+            padding: 30px 20px 20px;
+        }
+        .ttt-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            width: 80%;
+            margin: 15px auto;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            border: 3px solid #8b1c1c;
+            padding: 10px;
+            background-color: rgba(139, 28, 28, 0.03);
+        }
+        .ttt-cell {
+            border-bottom: 2px dashed rgba(139,28,28,0.5);
+            border-right: 2px dashed rgba(139,28,28,0.5);
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 85px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .ttt-cell:active { background-color: rgba(139,28,28,0.1); }
+        .ttt-cell:nth-child(3n) { border-right: none; }
+        .ttt-cell:nth-child(n+7) { border-bottom: none; }
+        .ttt-x { font-family: 'Caveat', cursive; font-size: 3.5em; color: #666; }
+        .ttt-heart { 
+            font-family: 'Caveat', cursive; 
+            font-size: 3.2em; 
+            color: #8b1c1c; 
+            text-shadow: 0 0 10px rgba(139,28,28,0.3);
+        }
+
+        /* --- WORD SEARCH GAME --- */
+        .ws-section {
+            text-align: center;
+            padding: 10px 20px 30px;
+            position: relative;
+        }
+        .ws-subtitle {
+            font-size: 0.95em;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        .ws-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            background-color: #8b1c1c; 
+            padding: 20px 15px;
+            border-radius: 20px 10px 25px 15px; 
+            margin: 15px auto;
+            width: 90%;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.15);
+        }
+        .ws-cell {
+            background-color: transparent;
+            color: #fdfaf4; 
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ws-cell:active { transform: scale(0.85); }
+        .ws-cell.selected {
+            background-color: rgba(253, 250, 244, 0.3);
+            color: #fdfaf4;
+        }
+        .ws-cell.found {
+            background-color: #2b4f2c; 
+            color: #fdfaf4;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+        }
+
+        /* --- COUPON REWARD --- */
+        .coupon-container {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            margin: 10px auto;
+            width: 95%;
+        }
+        .coupon-ticket {
+            background-color: #8b1c1c; 
+            border-radius: 15px;
+            padding: 12px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+            position: relative;
+            animation: floatCoupon 3s ease-in-out infinite;
+        }
+        @keyframes floatCoupon {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+        .coupon-ticket::before, .coupon-ticket::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 25px;
+            height: 25px;
+            background-color: #fdfaf4; 
+            border-radius: 50%;
+            transform: translateY(-50%);
+            box-shadow: inset 0 3px 5px rgba(0,0,0,0.1);
+        }
+        .coupon-ticket::before { left: -12.5px; }
+        .coupon-ticket::after { right: -12.5px; }
+        
+        .coupon-border {
+            border: 2.5px dashed rgba(253, 250, 244, 0.6);
+            border-radius: 10px;
+            padding: 20px 15px;
+            text-align: center;
+            background-color: transparent;
+        }
+        .coupon-title {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            color: #fdfaf4;
+            font-size: 1.5em;
+            letter-spacing: 1.5px;
+            margin-bottom: 5px;
+        }
+
+        /* --- KALENDER --- */
+        .text-section {
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+        .calendar-box {
+            position: relative;
+            border: 3px solid #8b1c1c;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            padding: 25px 15px 15px;
+            margin: 20px auto;
+            width: 90%;
+            background-image: radial-gradient(#8b1c1c 1.5px, transparent 1.5px);
+            background-size: 20px 20px;
+            background-position: top;
+            background-repeat: repeat-x;
+            background-color: white;
+            box-shadow: 3px 5px 15px rgba(0,0,0,0.08);
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #444;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .calendar-grid div { padding: 5px 0; }
+        .circled-date {
+            background-color: #8b1c1c;
+            color: white !important;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 3px 6px rgba(139,28,28,0.4);
+            transform: scale(1.1);
+        }
+
+        /* --- MUSIC PLAYER --- */
+        .music-section {
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .music-card {
+            background: white;
+            border: 2px solid #8b1c1c;
+            padding: 25px 20px;
+            border-radius: 20px;
+            width: 90%;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .record-container {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px;
+            position: relative;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: #111;
+            padding: 3px;
+        }
+        .record-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #222; 
+        }
+        .record-container::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 15px; height: 15px;
+            background: #fdfaf4;
+            border-radius: 50%;
+            border: 2px solid #333;
+        }
+        .spinning {
+            animation: spinRecord 4s linear infinite;
+        }
+        @keyframes spinRecord { 
+            100% { transform: rotate(360deg); } 
+        }
+        .song-title { font-weight: 800; font-size: 1.2em; margin-bottom: 2px; }
+        .artist-name { font-size: 0.85em; color: #666; margin-bottom: 20px; }
+        .progress-bar {
+            height: 6px; 
+            background: #eee;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            position: relative;
+            cursor: pointer;
+        }
+        .progress-fill {
+            width: 0%; 
+            height: 100%;
+            background: #8b1c1c;
+            border-radius: 5px;
+            position: relative;
+            transition: width 0.1s linear;
+        }
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            right: 0; 
+            top: 50%; 
+            transform: translate(50%, -50%); 
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border: 3.5px solid #8b1c1c;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .controls {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .controls span { display: flex; align-items: center; justify-content: center; }
+        .play-btn {
+            background: linear-gradient(135deg, #8b1c1c, #631212);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(139,28,28,0.3);
+            transition: all 0.2s;
+        }
+        .play-btn:active { transform: scale(0.9); }
+        
+        /* --- TIMELINE --- */
+        .timeline-section { padding: 30px 20px; position: relative; }
+        .timeline-container {
+            border-left: 3px dashed rgba(139,28,28,0.5);
+            margin-left: 20%;
+            padding-left: 25px;
+            position: relative;
+        }
+        .timeline-item { margin-bottom: 35px; position: relative; }
+        .timeline-item::before {
+            content: '♡';
+            position: absolute;
+            left: -37px;
+            top: 2px;
+            background-color: #fdfaf4;
+            color: #8b1c1c;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+        .time-text { font-size: 2em; margin-bottom: 2px; }
+        .time-desc { font-size: 0.95em; color: #444; font-weight: 600; }
+
+        /* --- LOVE LETTER --- */
+        .letter-section { text-align: center; padding: 30px 20px 40px; position: relative; }
+        .envelope-wrapper {
+            cursor: pointer;
+            text-align: center;
+            transition: opacity 0.5s ease;
+            margin: 20px auto;
+        }
+        .envelope-wrapper img {
+            width: 85%;
+            max-width: 280px;
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.15));
+            transition: transform 0.3s ease;
+        }
+        .envelope-wrapper:hover img {
+            transform: scale(1.05) rotate(-2deg);
+        }
+        .letter-hidden {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        .letter-card {
+            background-color: #fdfaf4; /* Senada dengan Web */
+            border-top: 3px double #8b1c1c; /* Senada dengan Web */
+            border-bottom: 3px double #8b1c1c; /* Senada dengan Web */
+            padding: 20px 15px;
+            width: 95%;
+            margin: 10px auto;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            color: #444;
+            position: relative;
+        }
+        .letter-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #8b1c1c;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            color: #8b1c1c;
+        }
+        .letter-header .cursive { text-transform: none; font-size: 1.6em; color: #8b1c1c; letter-spacing: 0; }
+        .letter-body { font-size: 0.85em; line-height: 1.4; margin-bottom: 20px; text-align: center; }
+        .letter-body p { margin-bottom: 12px; }
+        .letter-body .cursive { font-size: 1.8em; color: #8b1c1c; margin-bottom: 10px; display: block; text-align: left;}
+        .letter-footer { text-align: right; margin-bottom: 15px; color: #8b1c1c; line-height: 1.1; padding-right: 15px;}
+        .letter-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8em;
+            border-top: 1px solid #8b1c1c;
+            padding-top: 10px;
+            margin-top: 10px;
+            letter-spacing: 1px;
+            color: #8b1c1c;
+        }
+        .letter-meta .cursive { font-size: 1.4em; color: #8b1c1c; text-transform: lowercase; letter-spacing: 0; }
+
+        /* --- HEART PHOTO --- */
+        .heart-photo-section {
+            text-align: center;
+            padding: 50px 20px;
+            position: relative;
+            background-image: radial-gradient(rgba(139, 28, 28, 0.05) 2px, transparent 2px);
+            background-size: 20px 20px;
+        }
+        .heart-subtitle {
+            font-weight: 800;
+            font-size: 0.95em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #555;
+        }
+        .heart-photo-container {
+            width: 240px;
+            height: 240px;
+            margin: 25px auto;
+            position: relative;
+            filter: drop-shadow(0 10px 15px rgba(139,28,28,0.25));
+        }
+        .heart-photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            clip-path: url(#heart-mask); 
+            -webkit-clip-path: url(#heart-mask);
+        }
+        .heart-bg {
+            position: absolute;
+            top: -6px; left: -6px; right: -6px; bottom: -6px;
+            background-color: #8b1c1c;
+            clip-path: url(#heart-mask);
+            -webkit-clip-path: url(#heart-mask);
+            z-index: -1;
+            transform: scale(1.05);
+        }
+
+        /* --- COUNTUP (TIMER MAJU) --- */
+        .countdown-section { text-align: center; padding: 40px 20px; }
+        .sketch-box {
+            border: 3px solid #8b1c1c;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            padding: 20px 15px;
+            margin: 15px auto;
+            width: 95%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: white;
+            box-shadow: 3px 5px 15px rgba(0,0,0,0.05);
+        }
+        .cd-number { font-size: 2em; font-family: 'Courier New', Courier, monospace; font-weight: 900; color: #222; }
+        .cd-label { font-size: 0.9em; font-family: 'Caveat', cursive; font-weight: bold; color: #8b1c1c; }
+
+        /* --- TICKET BOOTH STRIP --- */
+        .ticket-booth-section {
+            text-align: center;
+            padding: 30px 20px 80px;
+            position: relative;
+        }
+        .ticket-wrapper {
+            background-color: #9b2226; 
+            width: 220px;
+            margin: 0 auto;
+            border-radius: 2px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            position: relative;
+            transform: rotate(-1.5deg);
+            padding: 25px 15px 25px;
+            display: flex;
+            flex-direction: column;
+        }
+        .binder-clip-loop {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 25px;
+            border: 3.5px solid #a0a0a0;
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+            z-index: 14;
+        }
+        .binder-clip {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 20px;
+            background: linear-gradient(to bottom, #e0e0e0, #999);
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.6);
+            z-index: 15;
+        }
+        .binder-clip-hole {
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background-color: #333;
+            border-radius: 50%;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
+        }
+        .ticket-inner {
+            background-color: #fdfaf4;
+            padding: 12px 12px 0 12px;
+            position: relative;
+            margin-top: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .ticket-inner img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            margin-bottom: 8px;
+            border-radius: 2px;
+            filter: grayscale(100%);
+            border: 1px solid #e0dcd3;
+        }
+        .love-text-sticker {
+            position: absolute;
+            top: 95px;
+            left: -15px;
+            font-family: 'Caveat', cursive;
+            color: #9b2226;
+            font-size: 1.4em;
+            transform: rotate(-15deg);
+            text-shadow: 1.5px 1.5px 0 #fdfaf4, -1px -1px 0 #fdfaf4, 1px -1px 0 #fdfaf4, -1px 1px 0 #fdfaf4;
+            z-index: 5;
+        }
+        .perforation-dots {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 5px 12px;
+        }
+        .perforation-dots span {
+            width: 7px;
+            height: 7px;
+            background-color: #9b2226;
+            border-radius: 50%;
+        }
+        .barcode-container {
+            text-align: center;
+            padding-bottom: 10px;
+        }
+        .barcode-bars {
+            height: 35px;
+            width: 100%;
+            margin: 0 auto 5px;
+            background: linear-gradient(to right, 
+                #111 0%, #111 3%, transparent 3%, transparent 5%, 
+                #111 5%, #111 8%, transparent 8%, transparent 10%,
+                #111 10%, #111 11%, transparent 11%, transparent 14%,
+                #111 14%, #111 17%, transparent 17%, transparent 19%,
+                #111 19%, #111 20%, transparent 20%, transparent 22%,
+                #111 22%, #111 25%, transparent 25%, transparent 28%,
+                #111 28%, #111 29%, transparent 29%, transparent 31%,
+                #111 31%, #111 35%, transparent 35%, transparent 38%,
+                #111 38%, #111 40%, transparent 40%, transparent 43%,
+                #111 43%, #111 45%, transparent 45%, transparent 47%,
+                #111 47%, #111 48%, transparent 48%, transparent 50%,
+                #111 50%, #111 53%, transparent 53%, transparent 55%,
+                #111 55%, #111 58%, transparent 58%, transparent 60%,
+                #111 60%, #111 61%, transparent 61%, transparent 64%,
+                #111 64%, #111 67%, transparent 67%, transparent 69%,
+                #111 69%, #111 70%, transparent 70%, transparent 72%,
+                #111 72%, #111 75%, transparent 75%, transparent 78%,
+                #111 78%, #111 79%, transparent 79%, transparent 81%,
+                #111 81%, #111 85%, transparent 85%, transparent 88%,
+                #111 88%, #111 90%, transparent 90%, transparent 93%,
+                #111 93%, #111 95%, transparent 95%, transparent 97%,
+                #111 97%, #111 100%
+            );
+        }
+        .barcode-text {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 0.8em;
+            letter-spacing: 2px;
+            color: #111;
+        }
+        .ticket-jagged {
+            height: 12px;
+            background-image: radial-gradient(circle at 50% 100%, transparent 6px, #fdfaf4 6.5px);
+            background-size: 16px 12px;
+            margin-bottom: 5px;
+        }
+        .ticket-footer {
+            text-align: center;
+            color: #fdfaf4;
+            margin-top: 15px;
+        }
+        .footer-cursive {
+            font-family: 'Caveat', cursive;
+            font-size: 2.2em;
+            line-height: 0.5;
+        }
+        .footer-bold {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: 1.6em;
+            letter-spacing: -0.5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            display: block;
+        }
+        
+        #main-content {
+            padding-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <svg width="0" height="0">
+        <defs>
+            <clipPath id="heart-mask" clipPathUnits="objectBoundingBox">
+                <path d="M0.5,1 C0.5,1 0,0.6 0,0.3 A0.25,0.25 0 0,1 0.5,0.1 A0.25,0.25 0 0,1 1,0.3 C1,0.6 0.5,1 0.5,1 Z" />
+            </clipPath>
+        </defs>
+    </svg>
+
+    <div class="mobile-container">
+        
+        <!-- ================= HALAMAN LOGIN ================= -->
+        <div id="login-section" class="auth-section">
+            <div class="auth-card">
+                <div class="tape"></div>
+                
+                <img src="ornamen/2.png" alt="Ornamen Hati" class="ornament" style="width: 60px; top: 10px; left: -10px; transform: rotate(-15deg);">
+                <img src="ornamen/5.png" alt="Ornamen Teks" class="ornament" style="width: 100px; bottom: 10px; right: -10px; transform: rotate(10deg);">
+
+                <h1 class="cursive" style="font-size: 2.8em; color: #8b1c1c; margin-bottom: 5px;">Masuk Dulu Yuk!</h1>
+                <p style="font-family: 'Nunito', sans-serif; color: #8b1c1c; font-weight: 700; font-size: 0.9em; margin-bottom: 25px;">Isi kata sandinya dengan benar ya sayang.</p>
+                
+                <p id="login-error" class="error-msg">Hmm, sepertinya ada yang salah. Coba lagi!</p>
+                
+                <input type="text" id="login-username" class="form-input" placeholder="Panggilan kesayangan..." autocomplete="off">
+                <input type="password" id="login-password" class="form-input" placeholder="Tanggal jadian..." autocomplete="off">
+                
+                <button class="form-btn" onclick="verifyLogin()">Lanjut</button>
+            </div>
+        </div>
+
+        <!-- ================= HALAMAN KUIS ================= -->
+        <div id="quiz-section" class="auth-section" style="display: none;">
+            <div class="auth-card">
+                <div class="tape"></div>
+                
+                <img src="ornamen/4.png" alt="Ornamen Bintang" class="ornament" style="width: 50px; top: -15px; right: -10px; transform: rotate(15deg);">
+                <img src="ornamen/3.png" alt="Ornamen Prangko" class="ornament" style="width: 65px; bottom: 15px; left: -15px; transform: rotate(-10deg);">
+
+                <h1 class="cursive" style="font-size: 2.8em; color: #8b1c1c; margin-bottom: 5px;">Jawab Dulu Ya!</h1>
+                <p style="font-family: 'Nunito', sans-serif; color: #8b1c1c; font-weight: 700; font-size: 0.9em; margin-bottom: 25px;">Buktikan kalau kamu beneran ingat semuanya!</p>
+                
+                <p id="quiz-error" class="error-msg">Hayoo, ada yang salah jawabannya. Diingat-ingat lagi dong!</p>
+
+                <div class="quiz-group">
+                    <label>1. Apa warna kesukaan mas?</label>
+                    <input type="text" id="q1" class="form-input" placeholder="tulis di sini..." autocomplete="off">
+                </div>
+                <div class="quiz-group">
+                    <label>2. Siapa yang pdkt duluan?</label>
+                    <input type="text" id="q2" class="form-input" placeholder="tulis di sini..." autocomplete="off">
+                </div>
+                <div class="quiz-group">
+                    <label>3. Hal yang sering mas minta?</label>
+                    <input type="text" id="q3" class="form-input" placeholder="tulis di sini..." autocomplete="off">
+                </div>
+                
+                <button class="form-btn" onclick="verifyQuiz()">Buka Hadiah ♡</button>
+            </div>
+        </div>
+
+        <!-- ================= KONTEN UTAMA (DISEMBUNYIKAN SEBELUM LOGIN) ================= -->
+        <div id="main-content" style="display: none;">
+            
+            <div class="header-section fade-in">
+                <img src="ornamen/2.png" alt="Ornamen Hati" class="ornament orn-fp">
+
+                <h1 class="cursive header-title">Dipta & Béeizy</h1>
+                <div class="floating-heart" style="top: 100px; left: 20px; animation-delay: 0s;">♡</div>
+                <div class="floating-heart" style="top: 150px; right: 30px; font-size: 2.2em; animation-delay: 1s;">♥</div>
+                <div class="floating-heart" style="top: 250px; left: 40px; animation-delay: 2s;">♡</div>
+                
+                <div class="main-photo">
+                    <img src="Foto/foto1.png" alt="Foto Utama">
+                </div>
+                <div class="cursive date-banner">Anniversary</div>
+            </div>
+
+            <div class="grid-section fade-in">
+                <h2 class="cursive section-title">Kisah Kita</h2>
+                <div class="photo-grid">
+                    <img src="Foto/foto2.png" alt="Memori 1">
+                    <img src="Foto/foto3.png" alt="Memori 2">
+                </div>
+            </div>
+
+            <!-- --- TIC-TAC-TOE GAME --- -->
+            <div class="tictactoe-section fade-in">
+                <h2 class="cursive section-title">Pemenang Hatiku</h2>
+                <p id="ttt-status" style="font-family: 'Nunito', sans-serif; color: #8b1c1c; font-weight: 700; margin-bottom: 5px;">Giliran Kamu</p>
+                
+                <div class="ttt-board">
+                    <div class="ttt-cell" data-index="0"></div>
+                    <div class="ttt-cell" data-index="1"></div>
+                    <div class="ttt-cell" data-index="2"></div>
+                    <div class="ttt-cell" data-index="3"></div>
+                    <div class="ttt-cell" data-index="4"></div>
+                    <div class="ttt-cell" data-index="5"></div>
+                    <div class="ttt-cell" data-index="6"></div>
+                    <div class="ttt-cell" data-index="7"></div>
+                    <div class="ttt-cell" data-index="8"></div>
+                </div>
+                
+                <button id="ttt-reset" class="form-btn" style="width: auto; padding: 5px 25px; font-size: 1.3em; display: none; margin: 15px auto 0;">Main Lagi</button>
+            </div>
+
+            <!-- --- WORD SEARCH GAME --- -->
+            <div class="ws-section fade-in">
+                
+                <div id="ws-game-area" style="transition: opacity 0.5s ease;">
+                    <h2 class="cursive section-title" style="margin-bottom: 5px;">Mini Game!</h2>
+                    <p class="ws-subtitle">Sentuh huruf-huruf untuk merangkai 3 kata ini:<br><b>FOREVER, LOVE, DIPTA</b></p>
+                    
+                    <div id="ws-grid" class="ws-grid">
+                        <!-- Grid dibuat via JS -->
+                    </div>
+                </div>
+
+                <div id="ws-reward" class="coupon-container">
+                    <h2 class="cursive section-title" style="margin-bottom: 20px;">Yeay, Berhasil!</h2>
+                    
+                    <div class="coupon-ticket">
+                        <div class="coupon-border">
+                            <h3 class="coupon-title">ONE FREE CUDDLE</h3>
+                            <p class="cursive" style="font-size:1.4em; color:#fdfaf4; margin-bottom: 15px; opacity:0.9;">for my sunshine</p>
+                            
+                            <div style="display:flex; justify-content:space-between; text-align:left; font-size:0.8em; font-weight:bold; color:#fdfaf4; opacity:0.85; line-height:1.4;">
+                                <div>
+                                    <p>uses : unlimited</p>
+                                    <p>expires : never</p>
+                                </div>
+                                <div style="text-align:right;">
+                                    <p>from : Mas</p>
+                                    <p>To : Béeizy</p>
+                                </div>
+                            </div>
+                            <div style="margin-top:10px; font-size:2em;">🤍</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-section fade-in">
+                <img src="ornamen/4.png" alt="Ornamen Bintang" class="ornament orn-star">
+
+                <div class="calendar-box">
+                    <div class="tape"></div>
+                    <h3 class="cursive" style="font-size: 2.8em; color: #8b1c1c;">Juni 2026</h3>
+                    <div class="calendar-grid">
+                        <div style="color:#8b1c1c">S</div><div style="color:#8b1c1c">S</div><div style="color:#8b1c1c">R</div><div style="color:#8b1c1c">K</div><div style="color:#8b1c1c">J</div><div style="color:#8b1c1c">S</div><div style="color:#8b1c1c">M</div>
+                        <div><span class="circled-date" style="padding: 2px 7px;">1</span></div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div>
+                        <div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div>
+                        <div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div>
+                        <div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div>
+                        <div>29</div><div>30</div><div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="music-section fade-in">
+                <h2 class="cursive section-title">Love Song</h2>
+                <div class="music-card">
+                    <div class="record-container" id="recordContainer">
+                        <img src="Foto/foto9.png" alt="Album Cover" class="record-img">
+                    </div>
+                    <audio id="myAudio" src="lagu.mp3"></audio>
+                    <h3 class="song-title">Penjaga Hatiku</h3>
+                    <p class="artist-name">Nadhif Basalamah</p>
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="controls">
+                        <span style="color: #999;">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="22" height="22"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+                        </span>
+                        <span style="color: #666;">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="28" height="28"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                        </span>
+                        <div class="play-btn" id="playBtn" onclick="togglePlay()">
+                            <span id="playIcon" style="margin-left: 2px;">
+                                <svg fill="currentColor" viewBox="0 0 24 24" width="28" height="28"><path d="M8 5v14l11-7z"/></svg>
+                            </span>
+                        </div>
+                        <span style="color: #666;">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="28" height="28"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                        </span>
+                        <span style="font-size: 0.9em; border: 1.5px solid #8b1c1c; border-radius: 6px; padding: 2px 4px; font-weight: bold; color: #8b1c1c;">♡</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-section fade-in">
+                <h2 class="cursive section-title" style="text-align: center; margin-bottom: 25px;">Timeline?</h2>
+                <div class="timeline-container">
+                    <div class="timeline-item">
+                        <div class="cursive time-text">1 Desember 2022</div>
+                        <div class="time-desc">Tanggal Pertama Jadian.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="cursive time-text">1 Juni 2026</div>
+                        <div class="time-desc">Hari Jadi ke-41 Bulan.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section fade-in">
+                <h2 class="section-title" style="font-family: 'Times New Roman', Times, serif; font-size: 2.2em; color: #8b1c1c; letter-spacing: -1px; margin-bottom: 20px;">A Love Letter.</h2>
+                
+                <div id="envelopeBtn" class="envelope-wrapper" onclick="openLetter()">
+                    <p class="cursive" style="font-size: 1.4em; color: #8b1c1c; margin-bottom: 15px;">Ada pesan untukmu, klik amplopnya ya! ♡</p>
+                    <img src="ornamen/amplop.png" alt="Amplop Surat Tertutup">
+                </div>
+
+                <div id="letterContent" class="letter-hidden">
+                    <div class="letter-card">
+                        <img src="ornamen/3.png" alt="Prangko Cinta" class="ornament orn-stamp">
+                        <img src="ornamen/1.png" alt="Segel Lilin" class="ornament orn-seal">
+
+                        <div class="letter-header">
+                            <p style="color: #8b1c1c;">FROM: <span class="cursive">Adipati Pamungkas Arm</span></p>
+                            <p style="border-left: 1px solid #8b1c1c; padding-left: 15px; color: #8b1c1c;">TO: <span class="cursive">Béeizy</span></p>
+                        </div>
+                        
+                        <div class="letter-body" style="color: #444;">
+                            <span class="cursive">Dear Béeizy,</span>
+                            <p>Happy anniversary, sayang.</p>
+                            <p>Aku tidak akan membuat pesan yang terlalu panjang. Aku hanya ingin mengucapkan terima kasih karena sudah menemani perjalanan ini sejauh yang tidak pernah kita bayangkan sebelumnya.</p>
+                            <p>Terima kasih sudah tetap ada, tetap percaya, dan tetap berjuang bersama di setiap keadaan. Tidak semua hal selalu berjalan sempurna, tetapi aku bersyukur karena kita selalu menemukan alasan untuk tetap bertahan.</p>
+                            <p>Semoga apa pun yang akan datang nanti, kita tetap bisa saling mendukung, saling menjaga, dan tumbuh menjadi versi terbaik dari diri kita masing-masing.</p>
+                            <p>Jaga kesehatan, jaga diri baik-baik, dan jangan lupa kalau kamu selalu punya tempat di hatiku.</p>
+                        </div>
+
+                        <div class="letter-footer">
+                            <span class="cursive" style="font-size: 1.5em;">I love you, always. 🤍</span><br>
+                        </div>
+                        
+                        <div class="letter-meta">
+                            <p>DATE: <span class="cursive">Now</span></p>
+                            <p style="border-left: 1px solid #8b1c1c; padding-left: 15px;">VALID FOR: <span class="cursive">forever</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="heart-photo-section fade-in">
+                <img src="ornamen/5.png" alt="Teks Together" class="ornament orn-text">
+
+                <p class="heart-subtitle">Setiap momen</p>
+                <h2 class="cursive section-title" style="font-size: 3em; margin-top: 5px;">Tak Terlupakan</h2>
+                
+                <div class="heart-photo-container">
+                    <div class="heart-bg"></div>
+                    <img src="Foto/foto10.png" alt="Memori Hati">
+                </div>
+                
+                <div class="cursive" style="font-size: 2.2em; margin-top: 25px; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">i love you so much</div>
+            </div>
+
+            <div class="countdown-section fade-in">
+                <h2 class="cursive section-title">Timelove:</h2>
+                <div class="sketch-box">
+                    <div>
+                        <div class="cd-number" id="days">00</div>
+                        <div class="cd-label">hari</div>
+                    </div>
+                    <div class="cd-number" style="color: #8b1c1c;">:</div>
+                    <div>
+                        <div class="cd-number" id="hours">00</div>
+                        <div class="cd-label">jam</div>
+                    </div>
+                    <div class="cd-number" style="color: #8b1c1c;">:</div>
+                    <div>
+                        <div class="cd-number" id="minutes">00</div>
+                        <div class="cd-label">menit</div>
+                    </div>
+                    <div class="cd-number" style="color: #8b1c1c;">:</div>
+                    <div>
+                        <div class="cd-number" id="seconds">00</div>
+                        <div class="cd-label">detik</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ticket-booth-section fade-in">
+                <img src="ornamen/6.png" alt="Buket Tulip" class="ornament orn-tulip">
+
+                <h2 class="cursive section-title" style="margin-bottom: 35px;">Moment!</h2>
+                
+                <div class="side-hearts" style="top: 80px; left: 15px; animation-delay: 0.5s;">♡</div>
+                <div class="side-hearts" style="top: 250px; right: 15px; font-size: 2.2em; animation-delay: 1.5s;">♥</div>
+                
+                <div class="ticket-wrapper">
+                    
+                    <div class="binder-clip-loop"></div>
+                    <div class="binder-clip">
+                        <div class="binder-clip-hole"></div>
+                    </div>
+
+                    <div class="ticket-inner">
+                        <div class="love-text-sticker">love of my life</div>
+                        
+                        <img src="Foto/foto6.png" alt="Pose 1">
+                        <img src="Foto/foto7.png" alt="Pose 2">
+                        <img src="Foto/foto8.png" alt="Pose 3">
+                        
+                        <div class="perforation-dots">
+                            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                        </div>
+
+                        <div class="barcode-container">
+                            <div class="barcode-bars"></div>
+                            <span class="barcode-text">98431 — 112</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ticket-jagged"></div>
+
+                    <div class="ticket-footer">
+                        <span class="footer-cursive">A box of</span>
+                        <span class="footer-bold">memories</span>
+                    </div>
+                </div>
+            </div>
+
+        </div> 
+    </div>
+
+    <script>
+        // --- OBSERVER UNTUK ANIMASI SCROLL ---
+        let observer;
+        function initAnimations() {
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+            observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('#main-content .fade-in').forEach((section) => {
+                observer.observe(section);
+            });
+        }
+
+        // --- SISTEM LOGIN ---
+        function verifyLogin() {
+            const user = document.getElementById('login-username').value.trim().toLowerCase();
+            const pass = document.getElementById('login-password').value.trim();
+            const err = document.getElementById('login-error');
+
+            if ((user === 'gendut' || user === 'dut') && (pass === '11222' || pass === '011222')) {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('quiz-section').style.display = 'flex';
+                err.style.display = 'none';
+            } else {
+                err.style.display = 'block';
+                err.innerText = "Hmm, sepertinya salah. Coba diingat-ingat lagi!";
+            }
+        }
+
+        // --- SISTEM KUIS ---
+        function verifyQuiz() {
+            const q1 = document.getElementById('q1').value.trim().toLowerCase();
+            const q2 = document.getElementById('q2').value.trim().toLowerCase();
+            const q3 = document.getElementById('q3').value.trim().toLowerCase();
+            const err = document.getElementById('quiz-error');
+
+            const isQ1Correct = q1 === 'ungu';
+            const isQ2Correct = q2 === 'mas' || q2 === 'dipta';
+            const isQ3Correct = q3 === 'cium' || q3 === 'kiss';
+
+            if (isQ1Correct && isQ2Correct && isQ3Correct) {
+                document.getElementById('quiz-section').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                
+                initAnimations();
+                updateTimer(); 
+                setInterval(updateTimer, 1000);
+            } else {
+                err.style.display = 'block';
+                err.innerText = "Ada jawaban yang masih salah nih! Hayoo jujur!";
+            }
+        }
+
+        // --- TIC-TAC-TOE LOGIC (MELAWAN ROBOT) ---
+        let tttBoard = ["", "", "", "", "", "", "", "", ""];
+        let tttPlayer = "♥";
+        let tttBot = "X";
+        let tttCurrentPlayer = "♥"; 
+        let tttGameActive = true;
+        const tttStatus = document.getElementById("ttt-status");
+        const tttCells = document.querySelectorAll(".ttt-cell");
+        const tttResetBtn = document.getElementById("ttt-reset");
+
+        const tttWinningConditions = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], 
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+            [0, 4, 8], [2, 4, 6]             
+        ];
+
+        function handleTTTClick(e) {
+            if (!tttGameActive || tttCurrentPlayer !== tttPlayer) return;
+            const cell = e.target;
+            const index = cell.getAttribute("data-index");
+
+            if (tttBoard[index] !== "") return;
+
+            makeMove(index, tttPlayer);
+            
+            if (tttGameActive) {
+                tttCurrentPlayer = tttBot;
+                tttStatus.innerText = "Mas sedang berpikir...";
+                setTimeout(botPlayTTT, 800); 
+            }
+        }
+
+        function makeMove(index, player) {
+            tttBoard[index] = player;
+            const cell = document.querySelector(`.ttt-cell[data-index='${index}']`);
+            cell.innerText = player;
+            if(player === "X") {
+                cell.classList.add("ttt-x");
+                cell.classList.remove("ttt-heart");
+            } else {
+                cell.classList.add("ttt-heart");
+                cell.classList.remove("ttt-x");
+            }
+            checkTTTWin(player);
+        }
+
+        function botPlayTTT() {
+            if (!tttGameActive) return;
+
+            let available = [];
+            for(let i=0; i<9; i++) {
+                if(tttBoard[i] === "") available.push(i);
+            }
+            if(available.length === 0) return;
+
+            let moveIndex = -1;
+            
+            moveIndex = findBestMove(tttBot);
+            
+            if(moveIndex === -1) moveIndex = findBestMove(tttPlayer);
+            
+            if(moveIndex === -1 && tttBoard[4] === "") moveIndex = 4;
+            
+            if(moveIndex === -1) {
+                moveIndex = available[Math.floor(Math.random() * available.length)];
+            }
+
+            makeMove(moveIndex, tttBot);
+
+            if (tttGameActive) {
+                tttCurrentPlayer = tttPlayer;
+                tttStatus.innerText = "Giliran Kamu";
+            }
+        }
+
+        function findBestMove(playerSymbol) {
+            for (let i = 0; i < tttWinningConditions.length; i++) {
+                const [a, b, c] = tttWinningConditions[i];
+                const cells = [tttBoard[a], tttBoard[b], tttBoard[c]];
+                const playerCount = cells.filter(cell => cell === playerSymbol).length;
+                const emptyCount = cells.filter(cell => cell === "").length;
+
+                if (playerCount === 2 && emptyCount === 1) {
+                    if (tttBoard[a] === "") return a;
+                    if (tttBoard[b] === "") return b;
+                    if (tttBoard[c] === "") return c;
+                }
+            }
+            return -1;
+        }
+
+        function checkTTTWin(player) {
+            let roundWon = false;
+            for (let i = 0; i < tttWinningConditions.length; i++) {
+                const [a, b, c] = tttWinningConditions[i];
+                if (tttBoard[a] && tttBoard[a] === tttBoard[b] && tttBoard[a] === tttBoard[c]) {
+                    roundWon = true;
+                    break;
+                }
+            }
+
+            if (roundWon) {
+                tttStatus.innerText = player === 'X' ? 'Yahh, Mas Menang!' : 'Yeay! Kamu Menang!';
+                tttGameActive = false;
+                tttResetBtn.style.display = "block";
+                return;
+            }
+
+            if (!tttBoard.includes("")) {
+                tttStatus.innerText = "Seri! Hati kalian seimbang 💞";
+                tttGameActive = false;
+                tttResetBtn.style.display = "block";
+                return;
+            }
+        }
+
+        function resetTTT() {
+            tttBoard = ["", "", "", "", "", "", "", "", ""];
+            tttCurrentPlayer = tttPlayer; 
+            tttGameActive = true;
+            tttStatus.innerText = "Giliran Kamu";
+            tttResetBtn.style.display = "none";
+            tttCells.forEach(cell => {
+                cell.innerText = "";
+                cell.className = "ttt-cell";
+            });
+        }
+
+        tttCells.forEach(cell => cell.addEventListener("click", handleTTTClick));
+        tttResetBtn.addEventListener("click", resetTTT);
+
+        // --- WORD SEARCH LOGIC ---
+        const wsContainer = document.getElementById('ws-grid');
+        const wsData = [
+            ['F','O','R','E','V','E','R'],
+            ['S','D','A','L','M','X','K'],
+            ['T','I','C','O','P','Z','Q'],
+            ['A','P','U','V','N','B','W'],
+            ['R','T','M','E','S','C','E'],
+            ['Y','A','G','H','J','K','L']
+        ];
+        
+        let wordsFoundCount = 0;
+        
+        const targetWords = {
+            'FOREVER': ["0-0","0-1","0-2","0-3","0-4","0-5","0-6"],
+            'DIPTA': ["1-1","2-1","3-1","4-1","5-1"],
+            'LOVE': ["1-3","2-3","3-3","4-3"]
+        };
+        
+        let remainingTargets = Object.values(targetWords);
+
+        wsData.forEach((row, rIndex) => {
+            row.forEach((letter, cIndex) => {
+                const cell = document.createElement('div');
+                cell.className = 'ws-cell';
+                cell.innerText = letter;
+                cell.dataset.pos = `${rIndex}-${cIndex}`;
+                
+                cell.onclick = () => {
+                    if(cell.classList.contains('found')) return;
+                    cell.classList.toggle('selected');
+                    checkWordSearchWin();
+                };
+                wsContainer.appendChild(cell);
+            });
+        });
+
+        function checkWordSearchWin() {
+            const selectedElements = Array.from(document.querySelectorAll('.ws-cell.selected'));
+            const selectedPos = selectedElements.map(el => el.dataset.pos).sort();
+
+            for(let i=0; i<remainingTargets.length; i++) {
+                const target = remainingTargets[i].slice().sort();
+                
+                if(JSON.stringify(selectedPos) === JSON.stringify(target)) {
+                    selectedElements.forEach(el => {
+                        el.classList.remove('selected');
+                        el.classList.add('found');
+                    });
+                    
+                    remainingTargets.splice(i, 1);
+                    wordsFoundCount++;
+                    
+                    if(wordsFoundCount === 3) {
+                        const gameArea = document.getElementById('ws-game-area');
+                        const reward = document.getElementById('ws-reward');
+                        
+                        setTimeout(() => {
+                            gameArea.style.opacity = '0';
+                            
+                            setTimeout(() => {
+                                gameArea.style.display = 'none'; 
+                                reward.style.display = 'block';  
+                                
+                                setTimeout(() => {
+                                    reward.style.opacity = '1';
+                                }, 50);
+                            }, 500); 
+                        }, 800); 
+                    }
+                    return; 
+                }
+            }
+        }
+
+        // --- SURAT LOGIC ---
+        function openLetter() {
+            const envelope = document.getElementById('envelopeBtn');
+            const letter = document.getElementById('letterContent');
+            
+            envelope.style.opacity = '0';
+            
+            setTimeout(() => {
+                envelope.style.display = 'none';
+                letter.style.display = 'block';
+                
+                setTimeout(() => {
+                    letter.style.opacity = '1';
+                }, 50);
+            }, 500); 
+        }
+
+        // --- TIMER LOGIC ---
+        const startDate = new Date("December 1, 2022 00:00:00").getTime();
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = now - startDate;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+
+        // --- AUDIO LOGIC ---
+        var audio = document.getElementById("myAudio");
+        var playIcon = document.getElementById("playIcon");
+        var progressFill = document.getElementById("progressFill");
+        var recordContainer = document.getElementById("recordContainer");
+
+        var svgPlay = '<svg fill="currentColor" viewBox="0 0 24 24" width="28" height="28"><path d="M8 5v14l11-7z"/></svg>';
+        var svgPause = '<svg fill="currentColor" viewBox="0 0 24 24" width="28" height="28"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playIcon.innerHTML = svgPause; 
+                playIcon.style.marginLeft = "0px";
+                recordContainer.classList.add("spinning");
+            } else {
+                audio.pause();
+                playIcon.innerHTML = svgPlay; 
+                playIcon.style.marginLeft = "2px";
+                recordContainer.classList.remove("spinning");
+            }
+        }
+
+        audio.addEventListener('timeupdate', function() {
+            if (audio.duration) {
+                var percentage = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = percentage + '%';
+            }
+        });
+
+        audio.addEventListener('ended', function() {
+            playIcon.innerHTML = svgPlay;
+            playIcon.style.marginLeft = "2px";
+            progressFill.style.width = "0%";
+            recordContainer.classList.remove("spinning");
+        });
+    </script>
+</body>
+</html>
