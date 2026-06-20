@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>⚠ ALERT SISTEM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --red:    #ff3333;
+      --red2:   #ff6060;
+      --bg:     #05010a;
+      --text:   #f0c0c0;
+      --dim:    rgba(255,51,51,0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'Share Tech Mono', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ── BACKGROUND ENHANCEMENTS ── */
+
+    /* CRT scanline */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        transparent, transparent 3px,
+        rgba(255,51,51,0.025) 3px, rgba(255,51,51,0.025) 4px
+      );
+      pointer-events: none;
+      z-index: 200;
+    }
+
+    /* Grid bg (Kotak-kotak murni) */
+    .bg-grid {
+      position: fixed; inset: 0;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(255,51,51,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,51,51,0.08) 1px, transparent 1px);
+      background-size: 40px 40px; /* Diperkecil sedikit agar kotak lebih rapat */
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Radial red glow center */
+    .bg-glow {
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(120,0,0,0.4) 0%, transparent 80%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Scan sweep */
+    .scan-sweep {
+      position: fixed;
+      left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255,51,51,0.9), transparent);
+      box-shadow: 0 0 14px rgba(255,51,51,0.7);
+      animation: sweepAnim 2.6s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 10;
+    }
+    @keyframes sweepAnim {
+      0%   { top: 8%;  opacity: 0.1; }
+      50%  { top: 74%; opacity: 0.9; }
+      100% { top: 14%; opacity: 0.15; }
+    }
+
+    /* ── CARD ── */
+    .card {
+      position: relative;
+      z-index: 5;
+      width: min(92vw, 440px);
+      background: rgba(8, 0, 12, 0.96);
+      border: 1px solid var(--red);
+      box-shadow: 0 0 50px rgba(255,51,51,0.25), inset 0 0 25px rgba(255,51,51,0.08);
+      clip-path: polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
+      padding: 36px 30px 32px;
+      text-align: center;
+      animation: cardIn 0.45s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    @keyframes cardIn {
+      from { transform: scale(0.78); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+
+    .alert-tag {
+      display: inline-block;
+      padding: 5px 20px;
+      background: var(--red);
+      color: #000;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing: 3px;
+      margin-bottom: 22px;
+      text-transform: uppercase;
+    }
+
+    .blink-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #000;
+      margin-right: 6px;
+      animation: blinkDot 0.8s infinite;
+      vertical-align: middle;
+    }
+    @keyframes blinkDot {
+      0%,100% { opacity:1; } 50% { opacity:0.2; }
+    }
+
+    .card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(16px,5vw,22px);
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      text-shadow: 0 0 18px rgba(255,51,51,0.7);
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: rgba(255,180,180,0.7);
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    /* progress scan bar */
+    .scan-bar {
+      width: 100%; height: 3px;
+      background: rgba(255,51,51,0.12);
+      margin: 22px 0 26px;
+      position: relative; overflow: hidden;
+    }
+    .scan-bar::after {
+      content: '';
+      position: absolute; left: -40%; width: 40%; height: 100%;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      animation: barMove 1.3s linear infinite;
+    }
+    @keyframes barMove {
+      from { left: -40%; }
+      to   { left: 140%; }
+    }
+
+    /* ── BUTTON AREA ── */
+
+    /* Area tombol statis */
+    .btn-row {
+      display: flex;
+      gap: 0px; /* Jarak tombol dirapatkan dari 14px ke 6px */
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      margin-top: 10px;
+    }
+
+    /* Placeholder untuk jaga layout agar Lain Kali tidak geser */
+    #btnYaPlaceholder {
+      padding: 12px 28px;
+      visibility: hidden;
+      pointer-events: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      white-space: nowrap;
+      border: 1px solid transparent; 
+    }
+
+    /* Wrapper fullscreen untuk tombol YA yang bergerak */
+    #btnYaWrapper {
+      position: fixed;
+      inset: 0;
+      pointer-events: none; 
+      z-index: 100; 
+    }
+
+    /* Gaya dasar Tombol YA (statik & gerak) */
+    .btn-ya-common {
+      background: rgba(255,51,51,0.1);
+      border: 1px solid var(--red);
+      color: var(--red);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      clip-path: polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-ya-common:hover {
+      background: var(--red);
+      color: #000;
+      box-shadow: 0 0 20px rgba(255,51,51,0.6);
+    }
+
+    /* 1. Tombol YA Awal (Statik di dalam Card) */
+    #btnYaInitial {
+      padding: 12px 28px; /* Padding disesuaikan agar lebih proporsional */
+      position: relative;
+    }
+
+    /* 2. Tombol YA yang bergerak (Awalnya disembunyikan) */
+    #btnYaMoving {
+      display: none; 
+      position: absolute;
+      pointer-events: all; 
+      transform-origin: center center;
+      padding: 12px 28px; 
+    }
+
+    /* Tombol Lain Kali */
+    #btnLainKali {
+      padding: 12px 24px; /* Padding disesuaikan agar tidak terlalu lebar */
+      background: transparent;
+      border: 1px solid rgba(179,229,252,0.3);
+      color: rgba(179,229,252,0.65);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      clip-path: polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    #btnLainKali:hover {
+      border-color: #b3e5fc;
+      color: #fff;
+    }
+
+    /* Counter hint */
+    #trapCounter {
+      margin-top: 18px;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: rgba(255,51,51,0.4);
+      font-family: 'Orbitron', sans-serif;
+      min-height: 16px;
+      transition: color 0.3s;
+    }
+    #trapCounter.urgent {
+      color: rgba(255,51,51,0.85);
+      animation: urgentBlink 0.5s infinite;
+    }
+    @keyframes urgentBlink {
+      0%,100% { opacity:1; } 50% { opacity:0.3; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+  <div class="scan-sweep"></div>
+
+  <div id="btnYaWrapper">
+    <button id="btnYaMoving" class="btn-ya-common" onclick="handleYaMoving()">YA</button>
+  </div>
+
+  <div class="card" id="mainCard">
+    <div class="alert-tag"><span class="blink-dot"></span>ALERT SISTEM</div>
+    <div class="card-title">Pelaku Ditemukan</div>
+    <div class="card-sub">Tangkap sekarang?</div>
+    <div class="scan-bar"></div>
+
+    <div class="btn-row">
+      <button id="btnYaInitial" class="btn-ya-common" onclick="handleYaInitial()">YA</button>
+      
+      <div id="btnYaPlaceholder">YA</div>
+
+      <button id="btnLainKali" onclick="handleLainKali()">Lain Kali</button>
+    </div>
+
+    <div id="trapCounter"></div>
+  </div>
+
+  <script>
+    const MAX_CLICKS = 5;   // total klik target sebelum redirect
+    let   clickCount = 0;
+
+    const btnInitial   = document.getElementById('btnYaInitial');
+    const btnMoving    = document.getElementById('btnYaMoving');
+    const placeholder  = document.getElementById('btnYaPlaceholder');
+    const counterEl    = document.getElementById('trapCounter');
+
+    // Mengeset posisi tombol
+    function setPos(btn, x, y, scale) {
+      btn.style.left      = x + 'px';
+      btn.style.top       = y + 'px';
+      btn.style.transform = `scale(${scale})`;
+    }
+
+    // Update teks counter
+    function updateCounter() {
+      const remaining = MAX_CLICKS + 1 - clickCount;
+      counterEl.textContent = ``;
+      if (clickCount >= MAX_CLICKS) {
+        counterEl.classList.add('urgent');
+        counterEl.textContent = ``;
+      }
+    }
+
+    // ── KELAKUAN TOMBOL YA ──
+
+    // Klik Pertama (Tombol Statik di Card)
+    function handleYaInitial() {
+      clickCount = 1;
+      updateCounter();
+
+      // 1. Ambil posisi tombol initial saat ini
+      const rect = btnInitial.getBoundingClientRect();
+
+      // 2. Pindahkan data posisi ke tombol moving secara instan (tanpa transisi)
+      btnMoving.style.transition = 'none';
+      setPos(btnMoving, rect.left, rect.top, 1);
+      
+      // 3. Tukar visibilitas
+      btnInitial.style.display = 'none'; // Sembunyikan yang statis
+      placeholder.style.visibility = 'visible'; // Munculkan placeholder agar layout 'Lain Kali' tidak geser
+      btnMoving.style.display = 'block'; // Tampilkan yang bergerak (tepat di atas posisi tadi)
+
+      // 4. Paksa reflow agar browser sadar tombol moving sudah ada di posisi awal
+      btnMoving.offsetHeight; 
+
+      // 5. Picu gerakan acak pertama segera
+      moveYaRandomly();
+    }
+
+    // Klik Kedua dst (Tombol yang bergerak)
+    function handleYaMoving() {
+      clickCount++;
+
+      if (clickCount > MAX_CLICKS) {
+        // Klik ke-(MAX_CLICKS+1) → redirect
+        window.location.href = 'error.html'; // Ganti dengan halaman tujuan Anda
+        return;
+      }
+
+      updateCounter();
+      moveYaRandomly();
+    }
+
+    // Fungsi inti menggerakkan tombol acak
+    function moveYaRandomly() {
+      // Tentukan ukuran baru — makin kecil tiap klik
+      // [klik2, klik3, klik4, klik5, klik6]
+      const scaleMap = [1, 0.85, 0.70, 0.55, 0.40, 0.40];
+      const newScale = scaleMap[clickCount - 1] ?? 0.40;
+
+      // Hitung batas area aman (viewport - ukuran tombol - margin)
+      const btnW  = btnMoving.offsetWidth; // Gunakan offsetWidth asli
+      const btnH  = btnMoving.offsetHeight;
+      const margin = 20;
+
+      // Hitung batas maksimal X dan Y dengan memperhitungkan scale (transform-origin center)
+      const scaledW = btnW * newScale;
+      const scaledH = btnH * newScale;
+      
+      // Karena transform-origin center, koordinat 'left/top' (pojok kiri atas CSS)
+      // harus dijaga agar seluruh tombol yang mengecil tetap di dalam layar.
+      const minX = margin + (btnW - scaledW) / 2;
+      const minY = margin + (btnH - scaledH) / 2;
+      const maxX = window.innerWidth  - margin - btnW + (btnW - scaledW) / 2;
+      const maxY = window.innerHeight - margin - btnH + (btnH - scaledH) / 2;
+
+      // Ambil posisi saat ini
+      const curX  = parseFloat(btnMoving.style.left) || window.innerWidth  / 2;
+      const curY  = parseFloat(btnMoving.style.top)  || window.innerHeight / 2;
+
+      let newX, newY, tries = 0;
+      do {
+        // Acak posisi pojok kiri atas (CSS Left/Top)
+        newX = minX + Math.random() * (maxX - minX);
+        newY = minY + Math.random() * (maxY - minY);
+        tries++;
+        // Ulangi jika posisi baru terlalu dekat dengan posisi sekarang
+      } while (
+        tries < 50 &&
+        Math.abs(newX - curX) < 150 && 
+        Math.abs(newY - curY) < 120
+      );
+
+      // Terapkan animasi gerak + kecil
+      btnMoving.style.transition = 'left 0.35s cubic-bezier(0.34,1.56,0.64,1), top 0.35s cubic-bezier(0.34,1.56,0.64,1), transform 0.3s ease';
+      setPos(btnMoving, newX, newY, newScale);
+    }
+
+    function handleLainKali() {
+      // Kembali ke halaman sebelumnya
+      if (history.length > 1) {
+        history.back();
+      } else {
+        alert("Tidak ada sejarah halaman.");
+      }
+    }
+  </script>
+</body>
+</html>
