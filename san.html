@@ -911,7 +911,7 @@
 
 // Loop untuk menambahkan GHST1 sampai GHST100 ke dalam array
 for (let i = 1; i <= 100; i++) {
-  ALLOWED_IDS.push('GHST' + i);
+  ALLOWED_IDS.push('GHOST' + i);
 }
 
     function handleKeyPress(e) {
@@ -942,7 +942,7 @@ for (let i = 1; i <= 100; i++) {
       let elapsed = 0;
 
       const searchInterval = setInterval(() => {
-        const randomID = "GHST" + Math.floor(100 + Math.random() * 900);
+        const randomID = "GHOST" + Math.floor(1 + Math.random() * 100);
         searchingNumber.textContent = randomID;
         scanStatus.textContent = "SEARCHING DATABASE DIRECTORY...";
         elapsed += intervalTime;
