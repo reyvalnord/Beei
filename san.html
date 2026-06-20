@@ -907,7 +907,12 @@
   </div>
 
   <script>
-    const ALLOWED_IDS = ['SAN1', 'ETC', 'Y'];
+    let ALLOWED_IDS = ['SAN1', 'ETC', 'Y'];
+
+// Loop untuk menambahkan GHST1 sampai GHST100 ke dalam array
+for (let i = 1; i <= 100; i++) {
+  ALLOWED_IDS.push('GHST' + i);
+}
 
     function handleKeyPress(e) {
       if (e.key === 'Enter') processIdScan();
